@@ -1,12 +1,12 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getProject } from "@/app/lib/projects";
+import { readProject } from "@/app/lib/projects";
 
 type Props = { params: Promise<{ slug: string }> };
 
 export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
-  const project = await getProject(slug);
+  const project = await readProject(slug);
   if (!project) notFound();
 
   return (

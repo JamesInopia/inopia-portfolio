@@ -46,7 +46,10 @@ export async function createProject(_prev: PostState, form: FormData): Promise<P
   const path = `${slug}-${Date.now()}.${image.type.split("/")[1]}`;
   const supabase = await createClient();
   const upload = await supabase.storage.from(BUCKET).upload(path, image, { contentType: image.type });
-  if (upload.error) return { message: "The picture could not be uploaded.", ...typed };
+  if (upload.error) {
+  console.error("Upload error:", upload.error);
+  return { message: `Upload failed: ${upload.error.message}`, ...typed };
+}
   const imageUrl = supabase.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
 
   try {
